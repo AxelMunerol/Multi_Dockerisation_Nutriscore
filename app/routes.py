@@ -37,20 +37,21 @@ def predict():
     return render_template('predict.html')
 
 @main.route('/results', methods=['POST'])
-mediane = [250,6.4,1.5,3.7,1.9,6.4,0.48,2.1]
+
 def results():
     def parse_input(value, num):
+        mediane = [250,6.4,1.5,3.7,1.9,6.4,0.48,2.1]
         return mediane[num] if value == "" else float(value)
 
     # Récupérer et traiter les valeurs des champs du formulaire
-    energy_kcal = parse_input(request.form.get('energy-kcal'),1)
-    fat = parse_input(request.form.get('fat'),2)
-    saturated_fat = parse_input(request.form.get('saturated-fat'),3)
-    sugars = parse_input(request.form.get('sugars'), 4)
-    fiber = parse_input(request.form.get('fiber'), 5)
-    proteins = parse_input(request.form.get('proteins'), 6)
-    salt = parse_input(request.form.get('salt'), 7)
-    fruits_vegetables_nuts_estimate = parse_input(request.form.get('fruits-vegetables-nuts-estimate-from-ingredients'), 8)
+    energy_kcal = parse_input(request.form.get('energy-kcal'),0)
+    fat = parse_input(request.form.get('fat'),1)
+    saturated_fat = parse_input(request.form.get('saturated-fat'),2)
+    sugars = parse_input(request.form.get('sugars'), 3)
+    fiber = parse_input(request.form.get('fiber'), 4)
+    proteins = parse_input(request.form.get('proteins'), 5)
+    salt = parse_input(request.form.get('salt'), 6)
+    fruits_vegetables_nuts_estimate = parse_input(request.form.get('fruits-vegetables-nuts-estimate-from-ingredients'), 7)
     selected_name = request.form.get('selected_name')
 
     # Mapping des catégories à leurs indices dans le tableau new_data
