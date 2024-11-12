@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  model:
+    build: ./model
+    container_name: model_container
+    volumes:
+      - model_data:/model  # Mounts volume at /model
+    networks:
+      - app_network
+
+  app:
+    build: ./app
+    container_name: flask_app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - model
+    networks:
+      - app_network
+    volumes:
+      - model_data:/model  # Mounts volume at /model, consistent with model_container
+      - search_results_data:/data  # Mounts volume for search results at /data
+
+volumes:
+  model_data:    # Shared volume for model data
+    driver: local
+  search_results_data:  # Volume pour les résultats des recherches
+    driver: local
+
+networks:
+  app_network:
+    driver: bridge  # Default driver, but can be customized if needed

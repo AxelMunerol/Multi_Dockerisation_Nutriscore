@@ -1,0 +1,51 @@
+ <!-- Modale Bootstrap -->
+ <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="warningModalLabel">Champs manquants</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Certains champs ne sont pas remplis. Cela pourrait augmenter le temps de calcul.
+                Souhaitez-vous continuer sans les remplir ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Retourner</button>
+                <button type="button" class="btn btn-primary" id="confirmSubmit">Continuer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.getElementById("predictionForm").addEventListener("submit", function (event) {
+        // Empêcher la soumission du formulaire
+        event.preventDefault();
+
+        // Vérifier les champs vides
+        const fields = ["energy-kcal", "fat", "saturated-fat", "sugars", "fiber", "proteins", "salt", "fruits-vegetables-nuts-estimate"];
+        let emptyFields = false;
+
+        fields.forEach(function (field) {
+            const fieldValue = document.getElementById(field).value;
+            if (!fieldValue) {
+                emptyFields = true;
+            }
+        });
+
+        if (emptyFields) {
+            // Afficher la modale si des champs sont vides
+            new bootstrap.Modal(document.getElementById('warningModal')).show();
+        } else {
+            // Soumettre si tous les champs sont remplis
+            event.target.submit();
+        }
+
+        // Soumettre le formulaire après confirmation
+        document.getElementById("confirmSubmit").addEventListener("click", function () {
+            event.target.submit();
+        });
+    });
+</script>
