@@ -1,15 +1,16 @@
 # Utiliser une image Python officielle
 FROM python:3.10-slim
 
-# Définir le répertoire de travail (en utilisant le format Linux)
-WORKDIR /model
+WORKDIR /app
 
-# Copier les fichiers nécessaires
+# Copier les fichiers de l'application Flask et le requirements.txt
 COPY requirements.txt .
-COPY model.pkl .
+COPY . .
 
-# Installer les dépendances depuis le fichier requirements.txt
+# Installer les dépendances
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Commande à exécuter (optionnel, ici vous pouvez laisser une commande pour garder le conteneur actif)
-CMD tail -f /dev/null
+# Exposer le port 5000 pour l'API Flask
+EXPOSE 5000
+
+CMD ["python", "run.py"]
