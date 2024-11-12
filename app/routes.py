@@ -6,21 +6,9 @@ from sklearn.preprocessing import MinMaxScaler
 import pickle
 from sklearn.model_selection import train_test_split
 
-df=pd.read_csv("cleaned_data.csv",sep=',',on_bad_lines='skip', low_memory=False)
-
-df=df.drop(['created_datetime','energy-kj_100g','code','nutrition-score-fr_100g','product_name','quantity','brands','categories','categories_en','pnns_groups_1','main_category_en','ingredients_text','countries_en','nutriscore_grade','product_name_lower','brands_lower'], axis = 1)
-df = pd.get_dummies(df, columns=['pnns_groups_2'], drop_first=True)
-X = df.drop("nutriscore_score", axis = 1)
-y = df["nutriscore_score"]
-
-
-# Division des données en ensembles d'entraînement et de test
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Normalisation des caractéristiques
 scaler = MinMaxScaler()
-X_train_scaled = scaler.fit_transform(X_train)
-X_test_scaled = scaler.transform(X_test)
 
 with open('model/model.pkl', 'rb') as file:
     model = pickle.load(file)
@@ -49,20 +37,20 @@ def predict():
     return render_template('predict.html')
 
 @main.route('/results', methods=['POST'])
+mediane = [250,6.4,1.5,3.7,1.9,6.4,0.48,2.1]
 def results():
-    def parse_input(value, nom):
-        global df
-        return df[nom].median() if value == "" else float(value)
+    def parse_input(value, num):
+        return mediane[num] if value == "" else float(value)
 
     # Récupérer et traiter les valeurs des champs du formulaire
-    energy_kcal = parse_input(request.form.get('energy-kcal'),'energy-kcal_100g')
-    fat = parse_input(request.form.get('fat'),'fat_100g')
-    saturated_fat = parse_input(request.form.get('saturated-fat'),'saturated-fat_100g')
-    sugars = parse_input(request.form.get('sugars'), 'sugars_100g')
-    fiber = parse_input(request.form.get('fiber'), 'fiber_100g')
-    proteins = parse_input(request.form.get('proteins'), 'proteins_100g')
-    salt = parse_input(request.form.get('salt'), 'salt_100g')
-    fruits_vegetables_nuts_estimate = parse_input(request.form.get('fruits-vegetables-nuts-estimate-from-ingredients'), 'fruits-vegetables-nuts-estimate-from-ingredients_100g')
+    energy_kcal = parse_input(request.form.get('energy-kcal'),1)
+    fat = parse_input(request.form.get('fat'),2)
+    saturated_fat = parse_input(request.form.get('saturated-fat'),3)
+    sugars = parse_input(request.form.get('sugars'), 4)
+    fiber = parse_input(request.form.get('fiber'), 5)
+    proteins = parse_input(request.form.get('proteins'), 6)
+    salt = parse_input(request.form.get('salt'), 7)
+    fruits_vegetables_nuts_estimate = parse_input(request.form.get('fruits-vegetables-nuts-estimate-from-ingredients'), 8)
     selected_name = request.form.get('selected_name')
 
     # Mapping des catégories à leurs indices dans le tableau new_data
@@ -134,14 +122,14 @@ def results():
         global df
         return df[nom].median() if value == "" else float(value)
     # Récupérer et traiter les valeurs des champs du formulaire
-    energy_kcal = parse_input(request.form.get('energy-kcal'),'energy-kcal_100g')
-    fat = parse_input(request.form.get('fat'),'fat_100g')
-    saturated_fat = parse_input(request.form.get('saturated-fat'),'saturated-fat_100g')
-    sugars = parse_input(request.form.get('sugars'), 'sugars_100g')
-    fiber = parse_input(request.form.get('fiber'), 'fiber_100g')
-    proteins = parse_input(request.form.get('proteins'), 'proteins_100g')
-    salt = parse_input(request.form.get('salt'), 'salt_100g')
-    fruits_vegetables_nuts_estimate = parse_input(request.form.get('fruits-vegetables-nuts-estimate-from-ingredients'), 'fruits-vegetables-nuts-estimate-from-ingredients_100g')
+    energy_kcal = parse_input(request.form.get('energy-kcal'),1)
+    fat = parse_input(request.form.get('fat'),2)
+    saturated_fat = parse_input(request.form.get('saturated-fat'),3)
+    sugars = parse_input(request.form.get('sugars'), 4)
+    fiber = parse_input(request.form.get('fiber'), 5)
+    proteins = parse_input(request.form.get('proteins'), 6)
+    salt = parse_input(request.form.get('salt'), 7)
+    fruits_vegetables_nuts_estimate = parse_input(request.form.get('fruits-vegetables-nuts-estimate-from-ingredients'), 8)
     selected_name = request.form.get('selected_name')
 
     pnns_groups_2_Appetizers = False
