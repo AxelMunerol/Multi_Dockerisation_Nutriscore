@@ -8,7 +8,8 @@ from sklearn.model_selection import train_test_split
 
 
 # Normalisation des caractéristiques
-scaler = MinMaxScaler()
+with open('model/scaler.pkl', 'rb') as file:
+    scaler = pickle.load(file)
 
 with open('model/model.pkl', 'rb') as file:
     model = pickle.load(file)
