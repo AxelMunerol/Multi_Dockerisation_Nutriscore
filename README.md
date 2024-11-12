@@ -22,7 +22,7 @@ Ce projet consiste à développer une application web de prédiction du Nutri-Sc
     ```
 
 2. Installez les dépendances nécessaires :
-
+    Docker lancer le docker compose 
     ```bash
     pip install -r requirements.txt
     ```
