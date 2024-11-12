@@ -1,0 +1,164 @@
+<!-- Page d'accueil -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    >
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <title>Open Food Facts - Prédiction Nutri-Score</title>
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <section class="prediction-form">
+        <h2>Prédire le Nutri-Score du produit</h2>
+        <form id="predictionForm" action="results" method="POST">
+            <div class="form-group">
+                <label for="energy-kcal">Énergie (kcal) :</label>
+                <input type="number" id="energy-kcal" name="energy-kcal" value="NaN">
+            </div>
+            <div class="form-group">
+                <label for="fat">Matières grasses (g) :</label>
+                <input type="number" id="fat" name="fat" value="NaN" max="100">
+            </div>
+            <div class="form-group">
+                <label for="saturated-fat">Acides gras saturés (g) :</label>
+                <input type="number" id="saturated-fat" name="saturated-fat" value="NaN" max="100">
+            </div>
+            <div class="form-group">
+                <label for="sugars">Sucres (g) :</label>
+                <input type="number" id="sugars" name="sugars" value="NaN" max="100">
+            </div>
+            <div class="form-group">
+                <label for="fiber">Fibres alimentaires (g) :</label>
+                <input type="number" id="fiber" name="fiber" value="NaN" max="100">
+            </div>
+            <div class="form-group">
+                <label for="proteins">Protéines (g) :</label>
+                <input type="number" id="proteins" name="proteins" value="NaN" max="100">
+            </div>
+            <div class="form-group">
+                <label for="salt">Sel (g) :</label>
+                <input type="number" id="salt" name="salt" value="NaN" max="100">
+            </div>
+            <div class="form-group">
+                <label for="fruits-vegetables-nuts-estimate-from-ingredients">Estimation de fruits, légumes, et noix (%) :</label>
+                <input type="number" id="fruits-vegetables-nuts-estimate-from-ingredients" name="fruits-vegetables-nuts-estimate-from-ingredients" value="NaN" max="100">
+            </div>
+            <div class="form-group">
+                <label for="category">Catégorie de produit :</label>
+                <select id="selected_name" name="selected_name" required>
+                    <option value="pnns_groups_2_unknown">Inconnu</option>
+                    <option value="pnns_groups_2_Artificially_sweetened_beverages">Boissons artificiellement sucrées</option>
+                    <option value="pnns_groups_2_Biscuits_and_cakes">Biscuits et gâteaux</option>
+                    <option value="pnns_groups_2_Bread">Pain</option>
+                    <option value="pnns_groups_2_Breakfast_cereals">Céréales de petit-déjeuner</option>
+                    <option value="pnns_groups_2_Cereals">Céréales</option>
+                    <option value="pnns_groups_2_Cheese">Fromage</option>
+                    <option value="pnns_groups_2_Chocolate_products">Produits au chocolat</option>
+                    <option value="pnns_groups_2_Dairy_desserts">Desserts lactés</option>
+                    <option value="pnns_groups_2_Dressings_and_sauces">Assaisonnements et sauces</option>
+                    <option value="pnns_groups_2_Dried_fruits">Fruits secs</option>
+                    <option value="pnns_groups_2_Eggs">Œufs</option>
+                    <option value="pnns_groups_2_Fats">Matières grasses</option>
+                    <option value="pnns_groups_2_Fish_and_seafood">Poisson et fruits de mer</option>
+                    <option value="pnns_groups_2_Fruit_juices">Jus de fruits</option>
+                    <option value="pnns_groups_2_Fruit_nectars">Nectars de fruits</option>
+                    <option value="pnns_groups_2_Fruits">Fruits</option>
+                    <option value="pnns_groups_2_Ice_cream">Glaces</option>
+                    <option value="pnns_groups_2_Legumes">Légumes</option>
+                    <option value="pnns_groups_2_Meat">Viande</option>
+                    <option value="pnns_groups_2_Milk_and_yogurt">Lait et yaourt</option>
+                    <option value="pnns_groups_2_Nuts">Noix</option>
+                    <option value="pnns_groups_2_Offals">Abats</option>
+                    <option value="pnns_groups_2_One_dish_meals">Plats uniques</option>
+                    <option value="pnns_groups_2_Pastries">Pâtisseries</option>
+                    <option value="pnns_groups_2_Pizza_pies_and_quiches">Pizzas, tartes et quiches</option>
+                    <option value="pnns_groups_2_Plant_based_milk_substitutes">Laits végétaux</option>
+                    <option value="pnns_groups_2_Potatoes">Pommes de terre</option>
+                    <option value="pnns_groups_2_Processed_meat">Viande transformée</option>
+                    <option value="pnns_groups_2_Salty_and_fatty_products">Produits salés et gras</option>
+                    <option value="pnns_groups_2_Sandwiches">Sandwichs</option>
+                    <option value="pnns_groups_2_Soups">Soupes</option>
+                    <option value="pnns_groups_2_Sweetened_beverages">Boissons sucrées</option>
+                    <option value="pnns_groups_2_Sweets">Confiseries</option>
+                    <option value="pnns_groups_2_Teas_and_herbal_teas_and_coffees">Thés, tisanes et cafés</option>
+                    <option value="pnns_groups_2_Unsweetened_beverages">Boissons non sucrées</option>
+                    <option value="pnns_groups_2_Vegetables">Légumes</option>
+                    <option value="pnns_groups_2_Waters_and_flavored_waters">Eaux et eaux aromatisées</option>                    
+                </select>
+            </div>
+            
+            <button type="submit" class="cta">Prédire le Nutri-Score</button>
+        </form>        
+    </section>
+
+    <!-- Modale PicoCSS -->
+    <dialog id="warningModal">
+        <article>
+            <header>
+                <h2>Champs manquants</h2>
+                <button aria-label="Close" class="close" onclick="closeModal()"></button>
+            </header>
+            <p>Certains champs ne sont pas remplis. Cela pourrait augmenter le temps de calcul.
+               Souhaitez-vous continuer sans les remplir ?</p>
+            <footer>
+                <a href="#" class="secondary" onclick="closeModal()">Retourner</a>
+                <a href="#" class="primary" id="confirmSubmit">Continuer</a>
+            </footer>
+        </article>
+    </dialog>
+
+    {% include 'footer.html' %}
+
+    <script>
+        // Fonction pour ouvrir la modale
+        function openModal() {
+            document.getElementById("warningModal").showModal();
+        }
+
+        // Fonction pour fermer la modale
+        function closeModal() {
+            document.getElementById("warningModal").close();
+        }
+
+        // Gestion du formulaire avec vérification des champs vides
+        document.getElementById("predictionForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Empêche la soumission initiale du formulaire
+
+            // Liste des champs à vérifier
+            const fields = [
+                "energy-kcal", "fat", "saturated-fat", "sugars", 
+                "fiber", "proteins", "salt", "fruits-vegetables-nuts-estimate-from-ingredients"
+            ];
+            let emptyFields = false;
+
+            fields.forEach(function (field) {
+                const fieldValue = document.getElementById(field).value;
+                if (!fieldValue || fieldValue === "NaN") { // Vérifie si le champ est vide ou égal à "NaN"
+                    emptyFields = true;
+                }
+            });
+
+            if (emptyFields) {
+                // Affiche la modale si des champs sont vides
+                openModal();
+            } else {
+                // Soumission si tous les champs sont remplis
+                event.target.submit();
+            }
+
+            // Soumettre le formulaire après confirmation
+            document.getElementById("confirmSubmit").addEventListener("click", function () {
+                event.target.submit();
+            });
+        });
+    </script>
+</body>
+</html>
